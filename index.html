@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Journey - Untuk Cintaku ❤️</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            min-height: 700px;
+        }
+        
+        .heart-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50,30 C60,10 80,10 90,30 C100,50 80,70 50,90 C20,70 0,50 10,30 C20,10 40,10 50,30 Z' fill='%23ff3366'/%3E%3C/svg%3E");
+        }
+        
+        .page {
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        h1 {
+            color: #ff3366;
+            margin-bottom: 20px;
+            font-size: 2.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        h2 {
+            color: #ff3366;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+            text-align: center;
+        }
+        
+        .message {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 30px;
+            padding: 0 10px;
+            text-align: center;
+        }
+        
+        .question {
+            font-size: 1.8rem;
+            color: #ff3366;
+            margin-bottom: 40px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            position: relative;
+            min-height: 120px;
+        }
+        
+        .btn {
+            padding: 18px 45px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        
+        .btn-yes {
+            background: linear-gradient(to right, #ff3366, #ff6b6b);
+            color: white;
+        }
+        
+        .btn-no {
+            background: linear-gradient(to right, #6c757d, #adb5bd);
+            color: white;
+            position: relative;
+            transition: all 0.1s ease;
+        }
+        
+        .btn-next {
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+            color: white;
+            margin-top: 30px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-yes:hover {
+            background: linear-gradient(to right, #ff1a53, #ff5252);
+        }
+        
+        .btn-next:hover {
+            background: linear-gradient(to right, #1ac9d4, #4a76d5);
+        }
+        
+        .btn:active {
+            transform: translateY(2px);
+        }
+        
+        .hearts-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .heart {
+            font-size: 2.5rem;
+            color: #ff3366;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        .photo-frame {
+            width: 250px;
+            height: 250px;
+            margin: 30px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5rem;
+            color: white;
+            position: relative;
+        }
+        
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .photos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .photo-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border: 2px solid #ffccd5;
+            position: relative;
+            height: 200px;
+        }
+        
+        .photo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .photo-card .photo-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 51, 102, 0.8);
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .love-letter {
+            background: #fff5f7;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            border-left: 5px solid #ff3366;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: left;
+        }
+        
+        .love-letter p {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            line-height: 1.7;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .countdown-item {
+            background: linear-gradient(135deg, #ff3366, #ff6b6b);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 100px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .countdown-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .page-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+        
+        .page-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .page-dot.active {
+            background-color: #ff3366;
+            transform: scale(1.2);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .footer {
+            margin-top: 40px;
+            font-size: 1rem;
+            color: #777;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .question {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 15px 35px;
+                font-size: 1.3rem;
+            }
+            
+            .button-container {
+                gap: 20px;
+            }
+            
+            .page {
+                padding: 30px 20px;
+            }
+            
+            .photos-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .photo-card {
+                height: 150px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .message {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 12px 30px;
+                font-size: 1.2rem;
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .photos-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .countdown {
+                gap: 10px;
+            }
+            
+            .countdown-item {
+                min-width: 70px;
+                padding: 15px 10px;
+            }
+            
+            .countdown-number {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="heart-bg"></div>
+        
+        <!-- Halaman 1: Pembuka -->
+        <div class="page active" id="page1">
+            <div class="hearts-container">
+                <div class="heart"><i class="fas fa-heart"></i></div>
+                <div class="heart"><i class="fas fa-heart"></i></div>
+                <div class="heart"><i class="fas fa-heart"></i></div>
+                <div class="heart"><i class="fas fa-heart"></i></div>
+                <div class="heart"><i class="fas fa-heart"></i></div>
+            </div>
+            
+            <h1>Haiii bubbieee ❤️</h1>
+            
+            <div class="message">
+                <p>Hai sayanggg, inii darii akuu buatt nayaaa &lt;3.</p>
+                <p>Nayaa kaloo capee bolee kokk jadiinn akuu tempatt bersandarr.</p>
+                <p>Nayaa haruss tauu rasa sayangg akuu ke nayaa ituu melebihii seisii semestaa, hehee</p>
+            </div>
+            
+            <!-- TEMPAT FOTO UTAMA PACAR ANDA -->
+            <div class="photo-frame">
+                <img src="https://i.pinimg.com/736x/6f/7e/30/6f7e30e0c5504eddb3154e700bdee8f8.jpg" alt="Foto pacar tersayang">
+            </div>
+            
+            <div class="button-container">
+                <button class="btn btn-next" onclick="nextPage()">Mulai <i class="fas fa-arrow-right"></i></button>
+            </div>
+            
+            <div class="page-indicator">
+                <div class="page-dot active" onclick="goToPage(1)"></div>
+                <div class="page-dot" onclick="goToPage(2)"></div>
+                <div class="page-dot" onclick="goToPage(3)"></div>
+                <div class="page-dot" onclick="goToPage(4)"></div>
+                <div class="page-dot" onclick="goToPage(5)"></div>
+            </div>
+            
+            <div class="footer">
+                <p>Dibuat dengan sepenuh cinta hanya nayaaa&lt;3</p>
+            </div>
+        </div>
+        
+        <!-- Halaman 2: Pertanyaan Valentine -->
+        <div class="page" id="page2">
+            <h2>Special question for you</h2>
+            
+            <div class="message">
+                <p>Kamu itu berharga lebih dari yang kamu kira!!</p>
+                <p>Kamu lebih dari cukup dan akan selalu lebih dari cukup:D.</p>
+            </div>
+            
+            <div class="question">Will You Be My Valentine?</div>
+            
+            <div class="button-container">
+                <button class="btn btn-yes" id="yesBtn">MAUU DONGG! 💖</button>
+                <button class="btn btn-no" id="noBtn">GAAMAUU 😢</button>
+            </div>
+            
+            <div class="hearts-container">
+                <div class="heart"><i class="fas fa-heart"></i></div>
+                <div class="heart"><i class="fas fa-heart"></i></div>
+                <div class="heart"><i class="fas fa-heart"></i></div>
+            </div>
+            
+            <div class="page-indicator">
+                <div class="page-dot" onclick="goToPage(1)"></div>
+                <div class="page-dot active" onclick="goToPage(2)"></div>
+                <div class="page-dot" onclick="goToPage(3)"></div>
+                <div class="page-dot" onclick="goToPage(4)"></div>
+                <div class="page-dot" onclick="goToPage(5)"></div>
+            </div>
+        </div>
+        
+        <!-- Halaman 3: Kenangan Indah Kita -->
+        <div class="page" id="page3">
+            <h2>Galeri wanita paling cantik:D</h2>
+            
+            <div class="message">
+                <p>Ini foto-foto yang pernah Nayaaa kirim ke Aku, hehee</p>
+            </div>
+            
+            <!-- GALERI FOTO PACAR ANDA -->
+            <div class="photos-container">
+                <!-- Foto 1 -->
+                <div class="photo-card" onclick="showPhotoModal('https://i.pinimg.com/736x/ef/87/20/ef87208ad4f901d78aff7769c9598aae.jpg')">
+                    <img src="https://i.pinimg.com/736x/ef/87/20/ef87208ad4f901d78aff7769c9598aae.jpg" alt="Foto 1">
+                </div>
+                
+                <!-- Foto 2 -->
+                <div class="photo-card" onclick="showPhotoModal('https://i.pinimg.com/736x/bb/97/d2/bb97d2f380addddaa0b22631660736f7.jpg')">
+                    <img src="https://i.pinimg.com/736x/bb/97/d2/bb97d2f380addddaa0b22631660736f7.jpg" alt="Foto 2">
+                </div>
+                
+                <!-- Foto 3 -->
+                <div class="photo-card" onclick="showPhotoModal('https://i.pinimg.com/736x/68/03/ad/6803adfc42654142fa39e29c52c83b49.jpg')">
+                    <img src="https://i.pinimg.com/736x/68/03/ad/6803adfc42654142fa39e29c52c83b49.jpg" alt="Foto 3">
+                </div>
+                
+                <!-- Foto 4 -->
+                <div class="photo-card" onclick="showPhotoModal('https://i.pinimg.com/736x/90/35/51/903551cbe0cfe3aac9b3075a51742e5f.jpg')">
+                    <img src="https://i.pinimg.com/736x/90/35/51/903551cbe0cfe3aac9b3075a51742e5f.jpg" alt="Foto 4">
+                </div>
+                
+                <!-- Foto 5 -->
+                <div class="photo-card" onclick="showPhotoModal('https://i.pinimg.com/736x/58/6f/12/586f12d0cb134d6598bfb9fe0469c7ee.jpg')">
+                    <img src="https://i.pinimg.com/736x/58/6f/12/586f12d0cb134d6598bfb9fe0469c7ee.jpg" alt="Foto 5">
+                </div>
+                
+                <!-- Foto 6 -->
+                <div class="photo-card" onclick="showPhotoModal('https://i.pinimg.com/736x/d1/18/a7/d118a7439f015c77f3b8f22c370d041c.jpg')">
+                    <img src="https://i.pinimg.com/736x/d1/18/a7/d118a7439f015c77f3b8f22c370d041c.jpg" alt="Foto 6">
+                </div>
+            </div>
+            
+            <div class="message">
+                <p>Kekurangan foto nihh, kirimin lagi dongg 🤭</p>
+            </div>
+            
+            <div class="button-container">
+                <button class="btn btn-next" onclick="nextPage()">Lanjut <i class="fas fa-arrow-right"></i></button>
+            </div>
+            
+            <div class="page-indicator">
+                <div class="page-dot" onclick="goToPage(1)"></div>
+                <div class="page-dot" onclick="goToPage(2)"></div>
+                <div class="page-dot active" onclick="goToPage(3)"></div>
+                <div class="page-dot" onclick="goToPage(4)"></div>
+                <div class="page-dot" onclick="goToPage(5)"></div>
+            </div>
+        </div>
+        
+        <!-- Halaman 4: Surat Cinta -->
+        <div class="page" id="page4">
+            <h2>Surat Cinta Untukmu</h2>
+            
+            <div class="love-letter">
+                <p>Sayangggkuuu,</p>
+                <p>Nayaaa tauu gaa? ketemuu Nayaaa tuhh salahh satuu darii banyaknyaa hall yangg buatt akuu bersyukurr.</p>
+                <p>Akuu beruntungg bangett ketemuu Nayaaa entahh takdirnyaa nantii kitaa bakall tetepp kayakk ginii atauu punn ndaa,</p>
+                <p>Akuu gaa akann pernahh lupainn Nayaaa!.</p>
+                <p>Makasiii banyakkk yaaa sayanggg&lt;3 .</p>
+                <p>I Lovee youuu, mwahhh.</p>
+                <p style="text-align: right; margin-top: 20px;">Dengan cinta yang tak terhingga,<br><strong>Dari seseorang yang sangat mencintaimu</strong></p>
+            </div>
+            
+            <div class="hearts-container">
+                <div class="heart"><i class="fas fa-heart"></i></div>
+                <div class="heart"><i class="fas fa-heart"></i></div>
+                <div class="heart"><i class="fas fa-heart"></i></div>
+                <div class="heart"><i class="fas fa-heart"></i></div>
+            </div>
+            
+            <div class="button-container">
+                <button class="btn btn-next" onclick="nextPage()">Lanjut <i class="fas fa-arrow-right"></i></button>
+            </div>
+            
+            <div class="page-indicator">
+                <div class="page-dot" onclick="goToPage(1)"></div>
+                <div class="page-dot" onclick="goToPage(2)"></div>
+                <div class="page-dot" onclick="goToPage(3)"></div>
+                <div class="page-dot active" onclick="goToPage(4)"></div>
+                <div class="page-dot" onclick="goToPage(5)"></div>
+            </div>
+        </div>
+        
+        <!-- Halaman 5: Penutup & Countdown -->
+        <div class="page" id="page5">
+            <h2>Happy Valentine's Day, Sayangggg! ❤️</h2>
+            
+            <div class="message">
+                <p>Nayaaa boleh jadiin akuu tempat untuk cerita, kapan pun yang Nayaaa mau.</p>
+                <p>I will always for you because you're the only good thing in my life.</p>
+                <p>dan kalau Nayaaa butuh seseorang tapi semua orang ninggalin Nayaaa,</p>
+                <p>Akuu disini, Akuu bakal nunggu Nayaaa butuhin Akuuu.</p>
+                <p>Jangan merasa semua orang sama ajaa, yaa?</p>
+                <p>Akuu bisa jadi apapun yang Nayaaa mau.</p>
+                <p>As long as it makes you happy</p>
+            </div>
+            
+            <div class="message">
+                <p>I Lovee youu!</p>
+                <p>and i miss youu so so much!.</p>
+            </div>
+            
+            <div class="photo-frame">
+                <img src="https://i.pinimg.com/736x/6f/7e/30/6f7e30e0c5504eddb3154e700bdee8f8.jpg" alt="Foto terakhir">
+            </div>
+            
+            <div class="button-container">
+                <button class="btn btn-yes" onclick="goToPage(1)"><i class="fas fa-redo"></i> Mulai Lagi</button>
+            </div>
+            
+            <div class="page-indicator">
+                <div class="page-dot" onclick="goToPage(1)"></div>
+                <div class="page-dot" onclick="goToPage(2)"></div>
+                <div class="page-dot" onclick="goToPage(3)"></div>
+                <div class="page-dot" onclick="goToPage(4)"></div>
+                <div class="page-dot active" onclick="goToPage(5)"></div>
+            </div>
+            
+            <div class="footer">
+                <p>You are my true love. Selamat Hari Valentine! 💕</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi halaman
+            const pages = document.querySelectorAll('.page');
+            const pageDots = document.querySelectorAll('.page-dot');
+            
+            // Setup tombol interaktif di halaman 2
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            
+            let noClickCount = 0;
+            let noBtnSize = 1;
+            
+            // Efek tombol YA
+            yesBtn.addEventListener('click', function() {
+                createConfetti();
+                alert("YEAYYY! Aku tau pasti Nayaa pilih MAUUU! 💖\n\nI Lovee youu, sayanggg!");
+                nextPage();
+            });
+            
+            // Fungsi untuk menggerakkan tombol TIDAK
+            function moveNoButton() {
+                noClickCount++;
+                
+                // Membuat tombol TIDAK bergerak acak
+                const container = document.querySelector('.container');
+                const containerRect = container.getBoundingClientRect();
+                const btnRect = noBtn.getBoundingClientRect();
+                
+                // Area yang aman untuk tombol
+                const maxX = containerRect.width - btnRect.width - 40;
+                const maxY = containerRect.height - btnRect.height - 40;
+                
+                // Posisi acak
+                const randomX = Math.floor(Math.random() * maxX);
+                const randomY = Math.floor(Math.random() * maxY);
+                
+                // Geser tombol
+                noBtn.style.position = 'absolute';
+                noBtn.style.left = `${randomX}px`;
+                noBtn.style.top = `${randomY}px`;
+                
+                // Membuat tombol semakin kecil
+                if (noClickCount >= 2) {
+                    noBtnSize -= 0.15;
+                    if (noBtnSize < 0.4) noBtnSize = 0.4;
+                    noBtn.style.transform = `scale(${noBtnSize})`;
+                }
+                
+                // Ubah teks tombol TIDAK
+                const noTexts = [
+                    "Yakinn sayangg? 😢",
+                    "Seriuss nihh? 😭",
+                    "Jangann sayanggg 💔",
+                    "Akuu sedihh lhoo... 😞",
+                    "Pikirinn lagii! 🤔",
+                    "Nantii nyesell lhoo ",
+                    "MAUUU dongg 🥺",
+                    "Pliss sayangg 😭",
+                    "Cobaa sentuhh MAUU"
+                ];
+                
+                const randomIndex = Math.floor(Math.random() * noTexts.length);
+                noBtn.textContent = noTexts[randomIndex];
+                
+                // Jika sudah terlalu banyak, sembunyikan tombol
+                if (noClickCount >= 8) {
+                    noBtn.style.display = 'none';
+                    setTimeout(() => {
+                        alert("Yahhh tomboll GAMAUU nya ilangg! Sekarang Nayaa harus memilih MAUU! 😊");
+                    }, 300);
+                }
+            }
+            
+            // Efek tombol TIDAK untuk mouse (desktop)
+            noBtn.addEventListener('mouseover', moveNoButton);
+            
+            // Efek tombol TIDAK untuk touch (mobile)
+            noBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                moveNoButton();
+            });
+            
+            // Setup countdown di halaman 5
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            
+            // Musik latar
+            const audio = new Audio('https://assets.mixkit.co/music/preview/mixkit-romantic-sunset-687.mp3');
+            audio.loop = true;
+            audio.volume = 0.3;
+            
+            // Aktifkan musik setelah user berinteraksi
+            document.addEventListener('click', function initAudio() {
+                audio.play().catch(e => console.log("Audio autoplay diblokir browser"));
+                document.removeEventListener('click', initAudio);
+            });
+            
+            // Juga aktifkan musik dengan touch event untuk mobile
+            document.addEventListener('touchstart', function initAudioTouch() {
+                audio.play().catch(e => console.log("Audio autoplay diblokir browser"));
+                document.removeEventListener('touchstart', initAudioTouch);
+            }, { once: true });
+        });
+        
+        // Fungsi untuk menampilkan modal foto besar
+        function showPhotoModal(photoUrl) {
+            // Buat modal
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+            modal.style.zIndex = '10000';
+            modal.style.cursor = 'pointer';
+            
+            // Tambahkan gambar ke modal
+            const img = document.createElement('img');
+            img.src = photoUrl;
+            img.style.maxWidth = '90%';
+            img.style.maxHeight = '90%';
+            img.style.borderRadius = '10px';
+            img.style.boxShadow = '0 0 30px rgba(255,255,255,0.3)';
+            
+            modal.appendChild(img);
+            
+            // Tambahkan tombol tutup
+            const closeBtn = document.createElement('div');
+            closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+            closeBtn.style.position = 'absolute';
+            closeBtn.style.top = '20px';
+            closeBtn.style.right = '20px';
+            closeBtn.style.color = 'white';
+            closeBtn.style.fontSize = '2rem';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.style.zIndex = '10001';
+            
+            modal.appendChild(closeBtn);
+            
+            // Event untuk menutup modal
+            closeBtn.addEventListener('click', function() {
+                document.body.removeChild(modal);
+            });
+            
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+            
+            // Tambahkan event untuk touch untuk mobile
+            closeBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                document.body.removeChild(modal);
+            });
+            
+            // Tambahkan modal ke body
+            document.body.appendChild(modal);
+        }
+        
+        // Fungsi navigasi halaman
+        function goToPage(pageNumber) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Tampilkan halaman yang dipilih
+            document.getElementById(`page${pageNumber}`).classList.add('active');
+            
+            // Update indikator halaman
+            document.querySelectorAll('.page-dot').forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === pageNumber - 1) {
+                    dot.classList.add('active');
+                }
+            });
+            
+            // Buat efek konfetti jika pindah ke halaman terakhir
+            if (pageNumber === 5) {
+                createConfetti();
+            }
+        }
+        
+        function nextPage() {
+            const currentPage = document.querySelector('.page.active');
+            const currentPageNum = parseInt(currentPage.id.replace('page', ''));
+            const nextPageNum = currentPageNum + 1;
+            
+            if (nextPageNum <= 5) {
+                goToPage(nextPageNum);
+            }
+        }
+        
+        // Fungsi countdown untuk halaman 5
+        function updateCountdown() {
+            const now = new Date();
+            const nextValentine = new Date(now.getFullYear(), 1, 14); // 14 Februari
+            
+            // Jika Valentine tahun ini sudah lewat, ambil tahun depan
+            if (now > nextValentine) {
+                nextValentine.setFullYear(nextValentine.getFullYear() + 1);
+            }
+            
+            const diff = nextValentine - now;
+            
+            const years = nextValentine.getFullYear() - now.getFullYear() - 1;
+            const months = nextValentine.getMonth() - now.getMonth();
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            // Update tampilan
+            const yearsElement = document.getElementById('years');
+            const monthsElement = document.getElementById('months');
+            const daysElement = document.getElementById('days');
+            const hoursElement = document.getElementById('hours');
+            
+            if (yearsElement) yearsElement.textContent = years;
+            if (monthsElement) monthsElement.textContent = months;
+            if (daysElement) daysElement.textContent = days;
+            if (hoursElement) hoursElement.textContent = hours;
+        }
+        
+        // Fungsi untuk membuat efek konfetti
+        function createConfetti() {
+            const colors = ['#ff3366', '#ff6b6b', '#ff8fa3', '#ffb3c1', '#ffccd5'];
+            const confettiCount = 100;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.innerHTML = '<i class="fas fa-heart"></i>';
+                confetti.style.position = 'fixed';
+                confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.fontSize = Math.random() * 20 + 10 + 'px';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-50px';
+                confetti.style.opacity = '0.9';
+                confetti.style.zIndex = '9999';
+                confetti.style.pointerEvents = 'none';
+                
+                document.body.appendChild(confetti);
+                
+                // Animasi jatuh
+                const animation = confetti.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 3000 + 2000,
+                    easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
+                });
+                
+                // Hapus confetti setelah animasi selesai
+                animation.onfinish = () => {
+                    confetti.remove();
+                };
+            }
+        }
+    </script>
+</body>
+</html>
